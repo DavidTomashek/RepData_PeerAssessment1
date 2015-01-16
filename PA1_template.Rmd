@@ -91,7 +91,19 @@ colnames(steps.per.day.missing) <- c("date","steps")
 steps.per.day.fill <- rbind(steps.per.day,steps.per.day.missing)
 ```
 
-And here is a histogram of the daily total steps for both the original data set and the new data set with the missing values replaced with average steps per day. Since all the added values were the average, it caused the frequency of the center bin to increase by eight and the rest of the distribution to remain the same.
+Let's compare the mean and the median of the two sets of daily averages.
+
+```{r}
+  average.steps.per.day.fill <- mean(steps.per.day.fill$steps, na.rm=T)
+  median.steps.per.day.fill <- median(steps.per.day.fill$steps, na.rm=T)
+  names(average.steps.per.day.fill) <- "New Average"
+  names(median.steps.per.day.fill) <- "New Median"
+  c(average.steps.per.day,average.steps.per.day.fill,median.steps.per.day,median.steps.per.day.fill)
+```
+
+The average obviously remains the same, as all we did was add more values with the same average.  The median went from a number slightly below the average to become the average itself, which makes sense as we filled the middle of the frequency distribution with eight values all equal to the average.  The impact of this method is to create a bias towards the average and make any outlier data harder to see.  
+
+To further show the bias, here is a histogram of the daily total steps for both the original data set and the new data set with the missing values replaced with average steps per day. Since all the added values were the average, it caused the frequency of the center bin to increase by eight and the rest of the distribution to remain the same.
 
 ```{r fig.width=12}
   par(mfrow=c(1,2),mar=c(5,5,3,2))

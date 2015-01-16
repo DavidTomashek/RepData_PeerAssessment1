@@ -127,7 +127,25 @@ colnames(steps.per.day.missing) <- c("date","steps")
 steps.per.day.fill <- rbind(steps.per.day,steps.per.day.missing)
 ```
 
-And here is a histogram of the daily total steps for both the original data set and the new data set with the missing values replaced with average steps per day. Since all the added values were the average, it caused the frequency of the center bin to increase by eight and the rest of the distribution to remain the same.
+Let's compare the mean and the median of the two sets of daily averages.
+
+
+```r
+  average.steps.per.day.fill <- mean(steps.per.day.fill$steps, na.rm=T)
+  median.steps.per.day.fill <- median(steps.per.day.fill$steps, na.rm=T)
+  names(average.steps.per.day.fill) <- "New Average"
+  names(median.steps.per.day.fill) <- "New Median"
+  c(average.steps.per.day,average.steps.per.day.fill,median.steps.per.day,median.steps.per.day.fill)
+```
+
+```
+##     Average New Average      Median  New Median 
+##    10766.19    10766.19    10765.00    10766.19
+```
+
+The average obviously remains the same, as all we did was add more values with the same average.  The median went from a number slightly below the average to become the average itself, which makes sense as we filled the middle of the frequency distribution with eight values all equal to the average.  The impact of this method is to create a bias towards the average and make any outlier data harder to see.  
+
+To further show the bias, here is a histogram of the daily total steps for both the original data set and the new data set with the missing values replaced with average steps per day. Since all the added values were the average, it caused the frequency of the center bin to increase by eight and the rest of the distribution to remain the same.
 
 
 ```r
@@ -136,7 +154,7 @@ And here is a histogram of the daily total steps for both the original data set 
   hist(steps.per.day.fill$steps, ylim=c(0,35),xlab= "Steps Per Day",main="Data With Imputed Values")
 ```
 
-![plot of chunk unnamed-chunk-11](figure/unnamed-chunk-11-1.png) 
+![plot of chunk unnamed-chunk-12](figure/unnamed-chunk-12-1.png) 
 
 ## Are there differences in activity patterns between weekdays and weekends?
 
@@ -164,6 +182,6 @@ Finally, we can create a time series plot to compare the average steps per inter
   print(plt)
 ```
 
-![plot of chunk unnamed-chunk-14](figure/unnamed-chunk-14-1.png) 
+![plot of chunk unnamed-chunk-15](figure/unnamed-chunk-15-1.png) 
 
 It would appear the spike we saw in average steps at the 8:35am interval comes mostly from the weekday data.  The weekend data has no single spike but shows smaller bursts of activity throughout the day.  
